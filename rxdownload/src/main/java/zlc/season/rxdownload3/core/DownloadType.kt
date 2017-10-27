@@ -12,4 +12,7 @@ abstract class DownloadType(val mission: RealMission) {
     abstract fun download(): Flowable<out Status>
 
     abstract fun delete()
+
+    abstract fun insertLastModified(lastModified: Long)
+    abstract fun getLastModified(): Long
 }

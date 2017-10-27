@@ -22,9 +22,17 @@ object HttpCore {
                 }
     }
 
-    fun checkLastModified(lastModified: Long, mission: RealMission): Maybe<Response<Void>> {
+    fun checkLastModified(lastModified: Long, mission: RealMission): Maybe<Any> {
         return api.checkLastModified(lastModified, mission.actual.url)
+                .flatMap {
+                    if (!it.isSuccessful){
+                        throw RuntimeException(it.message())
+                    }
+                    mission.setupLastModified(it)
+                    Maybe.just(ANY)
+                }
     }
+
 
     fun download(mission: RealMission, range: String = ""): Maybe<Response<ResponseBody>> {
         return api.download(range, mission.actual.url)

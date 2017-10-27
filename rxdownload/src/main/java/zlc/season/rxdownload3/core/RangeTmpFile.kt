@@ -56,7 +56,10 @@ class RangeTmpFile(val mission: RealMission) {
         }
         return 0L
     }
-
+    fun setLastModified(lastModified:Long){
+        fileStructure.lastModified = lastModified
+        writeStructure()
+    }
     fun isFileExits():Boolean = file.exists()
 
     fun reset() {
@@ -134,7 +137,6 @@ class RangeTmpFile(val mission: RealMission) {
         fun writeHeader(sink: BufferedSink) {
             totalSize = mission.totalSize
             totalSegments = calculateSegments()
-            lastModified = mission.actual.lastModified
             sink.write(FILE_HEADER_MAGIC_NUMBER_HEX)
             sink.writeLong(totalSize)
             sink.writeLong(totalSegments)

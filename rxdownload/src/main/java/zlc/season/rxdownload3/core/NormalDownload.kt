@@ -8,6 +8,14 @@ import zlc.season.rxdownload3.http.HttpCore
 import java.io.File
 
 class NormalDownload(mission: RealMission) : DownloadType(mission) {
+    override fun insertLastModified(lastModified: Long) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getLastModified(): Long {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private val targetFile = NormalTargetFile(mission)
 
     override fun initStatus() {

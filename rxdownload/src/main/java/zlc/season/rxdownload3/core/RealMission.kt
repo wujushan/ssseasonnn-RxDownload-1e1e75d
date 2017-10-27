@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 
 class RealMission(val actual: Mission, val semaphore: Semaphore) {
     var totalSize = 0L
+    var statusCode = 200
     var status: Status = Normal(Status())
 
     private var semaphoreFlag = false
@@ -194,8 +195,8 @@ class RealMission(val actual: Mission, val semaphore: Semaphore) {
         actual.saveName = fileName(actual.saveName, actual.url, resp)
         actual.rangeFlag = isSupportRange(resp)
         totalSize = contentLength(resp)
-        actual.lastModified = lastModified(resp)
-        logd("totalSize from content-Length $totalSize")
+        statusCode = resp.code()
+//        actual.lastModified = lastModified(resp)
         downloadType = generateType()
 
         if (enableDb) {
@@ -203,6 +204,14 @@ class RealMission(val actual: Mission, val semaphore: Semaphore) {
         }
     }
 
+    fun setupLastModified(resp: Response<Void>){
+        totalSize = contentLength(resp)
+        statusCode = resp.code()
+        actual.lastModified = lastModified(resp)
+    }
+    fun getLastModified():Long?{
+        return  downloadType?.getLastModified()
+    }
     fun emitStatusWithNotification(status: Status) {
         emitStatus(status)
         notifyNotification()
@@ -242,10 +251,15 @@ class RealMission(val actual: Mission, val semaphore: Semaphore) {
     }
 
     private fun checkAndDownload(): Flowable<Status> {
-        return check().flatMapPublisher {
-            logd("download")
+        return check().flatMap {
+            HttpCore.checkLastModified(getLastModified()?:0L,this)
+        }.flatMapPublisher {
             download()
         }
+     /*   return check().flatMapPublisher {
+
+            download()
+        }*/
     }
 
     private fun check(): Maybe<Any> {
