@@ -13,6 +13,7 @@ abstract class DownloadType(val mission: RealMission) {
 
     abstract fun delete()
 
-    abstract fun insertLastModified(lastModified: Long)
+    abstract fun setUpMission(totalSize:Long,statusCode:Int,lastModified:Long)
+
     abstract fun getLastModified(): Long
 }

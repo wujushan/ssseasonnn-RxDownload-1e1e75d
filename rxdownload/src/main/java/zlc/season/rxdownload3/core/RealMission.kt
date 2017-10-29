@@ -208,6 +208,7 @@ class RealMission(val actual: Mission, val semaphore: Semaphore) {
         totalSize = contentLength(resp)
         statusCode = resp.code()
         actual.lastModified = lastModified(resp)
+        downloadType?.setUpMission(totalSize,statusCode,actual.lastModified)
     }
     fun getLastModified():Long?{
         return  downloadType?.getLastModified()

@@ -118,8 +118,8 @@ class BasicDownloadActivity : AppCompatActivity() {
 
         private val iconUrl = "http://p5.qhimg.com/dr/72__/t01a362a049573708ae.png"
 //        private val url = "http://shouji.360tpcdn.com/170922/9ffde35adefc28d3740d4e16612f078a/com.tencent.tmgp.sgame_22011304.apk"
-        private val url = "http://192.168.43.1:8080/download/apks.pz"
-//        private val url = "http://h.hiphotos.baidu.com/image/pic/item/4a36acaf2edda3ccfbe265e108e93901203f92e9.jpg"
+//        private val url = "http://192.168.43.1:8080/download/apks.pz"
+        private val url = "http://shouji.360tpcdn.com/170913/5579a1e1fe54a14ef6a396ece3fa0099/com.qihoo360.mobilesafe_257.apk"
     }
 
 }

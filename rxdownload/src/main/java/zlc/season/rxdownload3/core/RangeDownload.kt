@@ -48,9 +48,19 @@ class RangeDownload(mission: RealMission) : DownloadType(mission) {
 
     private fun checkExists(): Boolean = isTargetFileExists() && isTmpFileExits()
 
-    override fun insertLastModified(lastModified: Long) {
+    private fun insertLastModified(lastModified: Long) {
         tmpFile.setLastModified(lastModified)
     }
+
+    override fun setUpMission(totalSize: Long, statusCode: Int, lastModified: Long) {
+        mission.totalSize = totalSize
+        mission.statusCode = statusCode
+        mission.actual.lastModified = lastModified
+        tmpFile.mission.totalSize = totalSize
+        tmpFile.mission.statusCode = statusCode
+        tmpFile.mission.actual.lastModified = lastModified
+    }
+
     override fun getLastModified(): Long {
         return tmpFile.getLastModified()
     }
@@ -100,17 +110,21 @@ class RangeDownload(mission: RealMission) : DownloadType(mission) {
 */
         when (mission.statusCode) {
             304 -> {
+                logd("304")
                 targetFile.delete()
                 targetFile.createShadowFile()
                 tmpFile.reset()
+                tmpFile.setLastModified(mission.actual.lastModified)
             }
             200 -> {
+                logd("200")
                 if (targetFile.isShadowExists()) {
                     tmpFile.checkFile()
                 } else {
                     targetFile.createShadowFile()
                     //reset the tmp file (delete tnp file -- create new tmp file -- write structure)
                     tmpFile.reset()
+                    tmpFile.setLastModified(mission.actual.lastModified)
                 }
             }
         }

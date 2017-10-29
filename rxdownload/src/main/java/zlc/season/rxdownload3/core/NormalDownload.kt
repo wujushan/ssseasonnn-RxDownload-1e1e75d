@@ -8,7 +8,7 @@ import zlc.season.rxdownload3.http.HttpCore
 import java.io.File
 
 class NormalDownload(mission: RealMission) : DownloadType(mission) {
-    override fun insertLastModified(lastModified: Long) {
+    override fun setUpMission(totalSize: Long, statusCode: Int, lastModified: Long) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
